@@ -7,9 +7,9 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.List;
 
-import javax.jms.Session;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -19,6 +19,7 @@ import org.apache.commons.dbutils.DbUtils;
 import org.apache.commons.dbutils.QueryRunner;
 import org.apache.commons.dbutils.handlers.BeanHandler;
 import org.apache.commons.dbutils.handlers.BeanListHandler;
+import org.apache.taglibs.standard.tag.common.core.CatchTag;
 
 @WebServlet("/LoginAct")
 public class LoginAct extends HttpServlet {
@@ -37,6 +38,16 @@ public class LoginAct extends HttpServlet {
 		String password = request.getParameter("inputPassword").trim(); // √‹¬Î
 		password = MD5_Operation.getMD5(password).toUpperCase();
 		String checkCode = request.getParameter("checkCode").trim(); // —È÷§¬Î
+		String remember = request.getParameter("remember");
+		if(remember!=null && remember.equals("on")){
+			Cookie cookie=new Cookie("loginCookie", username);
+			cookie.setMaxAge(7*24*60*60);
+			response.addCookie(cookie);
+		}else{
+			Cookie cookie=new Cookie("loginCookie", username);
+			cookie.setMaxAge(0);
+			response.addCookie(cookie);
+		}
 		String ip = request.getHeader("x-forwarded-for"); // IP
 		if (ip == null || ip.length() == 0 || ip.equalsIgnoreCase("unknown")) {
 			ip = request.getRemoteAddr();
@@ -46,7 +57,7 @@ public class LoginAct extends HttpServlet {
 		if (checkCode.equals(piccode)) {
 			LoginEntity res=LoginJudger(username,password);
 			if(!res.equals(null)){
-				HttpSession session=request.getSession(true); 
+				HttpSession session=request.getSession(); 
 				session.setAttribute("loginSession", username);
 				out.println("<script>window.location.href=\"/WEB_JSP/webs/Welcome.jsp\";</script>");
 			}

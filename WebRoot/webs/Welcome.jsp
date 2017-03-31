@@ -21,6 +21,10 @@
 </head>
 
 <body>
+	<% if(request.getSession().getAttribute("loginSession")==null){
+		RequestDispatcher rd = request.getRequestDispatcher("/webs/Login.jsp");  
+		rd.forward(request, response);
+	} %>
 	<!-- Header -->
 	<%
 		WebStyle.Get_Header(out, request);

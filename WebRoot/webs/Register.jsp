@@ -49,9 +49,9 @@
 		<div class="form-group">
 			<label for="selectorSex" style="display:block;">Sex&nbsp</label> <label
 				for="selectorSexMan"><input type="radio" name="optionSex"
-				id="optionSex1" value="1" checked>&nbspMan&nbsp</label> <label
+				id="optionSex1" value="1" checked>&nbspMale&nbsp</label> <label
 				for="electorSexWoman"><input type="radio" name="optionSex"
-				id="optionSex2" value="0">&nbspWoman&nbsp</label>
+				id="optionSex2" value="0">&nbspFemale&nbsp</label>
 		</div>
 		<div class="form-group">
 			<label for="inputYear" style="display:block;">Year</label> <input

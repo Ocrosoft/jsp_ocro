@@ -21,7 +21,7 @@ public class UserSearchAct extends HttpServlet {
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		request.setCharacterEncoding("utf-8");
-		String username = request.getParameter("username").trim(); // 用户名
+		String username = request.getParameter("searchUsername").trim(); // 用户名
 		response.setContentType("text/html;charset=utf-8");
 		PrintWriter out = response.getWriter();
 		
@@ -29,7 +29,7 @@ public class UserSearchAct extends HttpServlet {
 		if(!res.equals(null) && res.size()!=0){
 			for(LoginEntity i : res){
 				out.println("Username:"+i.getUsername());
-				out.println("Sex:"+(i.getSex()=="1"?"Man":"Woman"));
+				out.println("Sex:"+(i.getSex()=="1"?"Male":"Female"));
 				out.println("Grade:"+i.getGrade());
 				out.println("Age:"+i.getAge());
 				out.println("Major:"+i.getMajor());

@@ -1,5 +1,5 @@
-<%@ page language="java" import="java.util.*" import="WebStyleService.*" import="LRService.*"
-	pageEncoding="UTF-8"%>
+<%@ page language="java" import="java.util.*" import="WebStyleService.*"
+	import="LRService.*" pageEncoding="UTF-8"%>
 <%
 	String path = request.getContextPath();
 	String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort()
@@ -23,15 +23,15 @@
 <body>
 	<!-- Header -->
 	<%
-		WebStyle.Get_Header(out,request);
+		WebStyle.Get_Header(out, request);
 	%>
 
 	<!-- Content -->
 	<%
 		WebStyle.Get_Standard_Content_Heander(out);
 	%>
-	<form id="Login" class="form-horizontal" role="form" action="/WEB_JSP/LoginAct"
-		method="post">
+	<form id="Login" class="form-horizontal" role="form"
+		action="/WEB_JSP/LoginAct" method="post">
 		<div class="form-group">
 			<label for="inputUsername">Username</label>
 			<div>
@@ -55,6 +55,10 @@
 				src="/WEB_JSP/CheckCode" />
 		</div>
 		<div class="form-group">
+			<input type="checkbox" name="remember" id="checkBoxRemember" /> <label for="checkRemember">
+				Remember me</label>
+		</div>
+		<div class="form-group">
 			<div>
 				<input type="submit" value="Login"
 					class="btn btn-primary form-control" />
@@ -64,6 +68,19 @@
 				style="outline: none;right:0;position:absolute;" value="Register->" /></a>
 		</div>
 	</form>
+	<%
+		Cookie[] cookies = request.getCookies();
+		if (cookies != null) {
+			for (Cookie cookie : cookies) {
+				String cName = cookie.getName();
+				if (cName.equals("loginCookie")) {
+					out.write("<script>document.getElementById('inputUsername').value='"+cookie.getValue()+"';</script>");
+					out.write("<script>document.getElementById('checkBoxRemember').checked=true;</script>");
+					break;
+				}
+			}
+		}
+	%>
 	<%
 		WebStyle.Get_Standard_Content_Footer(out);
 	%>

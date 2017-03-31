@@ -20,7 +20,7 @@
 <body>
 	<!-- Header -->
 	<%
-		WebStyleService.WebStyle.Get_Header(out, "0");
+		WebStyleService.WebStyle.Get_Header(out, request);
 	%>
 
 	<!-- Content -->

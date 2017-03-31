@@ -24,17 +24,31 @@ public class WebStyle {
 		out.print("<div class=\"collapse navbar-collapse\" id=\"bs-example-navbar-collapse-1\">");
 		out.print("<ul class=\"nav navbar-nav\">");
 		out.print("</ul>");
+		out.print("<form class=\"navbar-form navbar-left\" role=\"search\" method=\"post\" action=\"/WEB_JSP/UserSearchAct\">");
+		out.print("<div class=\"form-group\">");
+		out.print("<input name=\"searchUsername\" type=\"text\" class=\"form-control\" placeholder=\"Enter username\"/>");
+		out.print("</div> <button type=\"submit\" class=\"btn btn-default\">Search</button>");
+		out.print("</form>");
 		out.print("<ul class=\"nav navbar-nav navbar-right\">");
 		out.print("<li class=\"dropdown\">");
 		out.print("<a href=\"#\" class=\"dropdown-toggle\" data-toggle=\"dropdown\">");
-		HttpSession session=request.getSession(true); 
-		if(session.getAttribute("loginSession")==null){
+		HttpSession session=request.getSession(); 
+		if(session.getAttribute("loginSession")!=null){
 			out.print(session.getAttribute("loginSession"));
-		}else{
-			out.print("Login");
-		}out.print("<strong class=\"caret\"></strong>");
+		}
+		else out.print("Login");
+		out.print("<strong class=\"caret\"></strong>");
 		out.print("</a>");
 		out.print("<ul class=\"dropdown-menu\">");
+		if(session.getAttribute("loginSession")!=null){
+			out.print("<li><a href=\"/WEB_JSP/Profile.aspx\">Edit Profile</a></li>");
+			out.print("<li><a href=\"#\" onclick=\"document.getElementById(\'LogoutForm\').submit();return false;\">Logout</a></li>");
+			out.print("<form id=\"LogoutForm\" method=\"post\" action=\"/WEB_JSP/LogoutAct\">");
+			out.print("</form>");
+		}else{
+			out.print("<li><a href=\"/WEB_JSP/webs/Login.jsp\">Login</a></li>");
+			out.print("<li><a href=\"/WEB_JSP/webs/Register.jsp\">Register</a></li>");
+		}
 		out.print("</ul>");
 		out.print("</li>");
 		out.print("</a>");
