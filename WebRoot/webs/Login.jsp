@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <%@ page isELIgnored="false" language="java"
 	import="java.util.*,WebStyleService.*,LRService.*" pageEncoding="UTF-8"%>
 <%
@@ -79,6 +80,85 @@
 				if (cName.equals("loginCookie")) {
 					out.write("<script>document.getElementById('inputUsername').value='" + cookie.getValue()
 							+ "';</script>");
+=======
+<%@ page language="java" import="java.util.*" import="WebStyleService.*"
+	import="LRService.*" pageEncoding="UTF-8"%>
+<%
+	String path = request.getContextPath();
+	String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort()
+			+ path + "/";
+%>
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<base href="<%=basePath%>">
+<%
+	WebStyle.Import_CSS(out);
+%>
+
+<title>Login</title>
+<meta http-equiv="pragma" content="no-cache">
+<meta http-equiv="cache-control" content="no-cache">
+<meta http-equiv="expires" content="0">
+</head>
+
+<body>
+	<!-- Header -->
+	<%
+		WebStyle.Get_Header(out, request);
+	%>
+
+	<!-- Content -->
+	<%
+		WebStyle.Get_Standard_Content_Heander(out);
+	%>
+	<form id="Login" class="form-horizontal" role="form"
+		action="/WEB_JSP/LoginAct" method="post">
+		<div class="form-group">
+			<label for="inputUsername">Username</label>
+			<div>
+				<input class="form-control" id="inputUsername"
+					placeholder="Email/Name/Phone Number" name="inputUsername" />
+			</div>
+		</div>
+		<div class="form-group">
+			<label for="inputPassword">Password</label>
+			<div>
+				<input type="password" class="form-control" name="inputPassword"
+					id="inputPassword" placeholder="Password" />
+			</div>
+		</div>
+		<div class="form-group">
+			<label for="inputCheckCode" style="display:block;">CheckCode</label>
+			<input type="text" id="checkCode" name="checkCode" value=""
+				class="form-control" style="width:75%;display:inline;"
+				placeholder="Enter checkcode" /> <img
+				style="cursor:hand;float:right;" alt="CheckCode" id="imageCode"
+				src="/WEB_JSP/CheckCode" />
+		</div>
+		<div class="form-group">
+			<input type="checkbox" name="remember" id="checkBoxRemember" /> <label for="checkRemember">
+				Remember me</label>
+		</div>
+		<div class="form-group">
+			<div>
+				<input type="submit" value="Login"
+					class="btn btn-primary form-control" />
+			</div>
+			<a href="/WEB_JSP/webs/Register.jsp"> <input type="button"
+				class="btn btn-link"
+				style="outline: none;right:0;position:absolute;" value="Register->" /></a>
+		</div>
+	</form>
+	<%
+		Cookie[] cookies = request.getCookies();
+		if (cookies != null) {
+			for (Cookie cookie : cookies) {
+				String cName = cookie.getName();
+				if (cName.equals("loginCookie")) {
+					out.write("<script>document.getElementById('inputUsername').value='"+cookie.getValue()+"';</script>");
+>>>>>>> branch 'master' of ssh://git@github.com/Ocrosoft/jsp_ocro.git
 					out.write("<script>document.getElementById('checkBoxRemember').checked=true;</script>");
 					break;
 				}

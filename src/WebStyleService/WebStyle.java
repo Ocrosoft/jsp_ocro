@@ -41,6 +41,7 @@ public class WebStyle {
 		out.print("</a>");
 		out.print("<ul class=\"dropdown-menu\">");
 		if(session.getAttribute("loginSession")!=null){
+<<<<<<< HEAD
 			out.print("<li><a href=\"/WEB_JSP/webs/Profile.jsp\">Edit Profile</a></li>");
 			out.print("<li><a href=\"#\" onclick=\"document.getElementById(\'LogoutForm\').submit();return false;\">Logout</a></li>");
 			out.print("<form style=\"display:none;\" id=\"LogoutForm\" method=\"post\" action=\"/WEB_JSP/LogoutAct\">");
@@ -72,6 +73,39 @@ public class WebStyle {
 		out.print("<p class=\"text-muted credit\" style=\"padding: 10px; text-align: center;\">");
 		out.print("<span id=\"copyright\">&copy;2017 ocrosoft.com<br />");
 		out.print("浙ICP备16010729号 ");
+=======
+			out.print("<li><a href=\"/WEB_JSP/Profile.aspx\">Edit Profile</a></li>");
+			out.print("<li><a href=\"#\" onclick=\"document.getElementById(\'LogoutForm\').submit();return false;\">Logout</a></li>");
+			out.print("<form id=\"LogoutForm\" method=\"post\" action=\"/WEB_JSP/LogoutAct\">");
+			out.print("</form>");
+		}else{
+			out.print("<li><a href=\"/WEB_JSP/webs/Login.jsp\">Login</a></li>");
+			out.print("<li><a href=\"/WEB_JSP/webs/Register.jsp\">Register</a></li>");
+		}
+		out.print("</ul>");
+		out.print("</li>");
+		out.print("</a>");
+		out.print("<ul class=\"dropdown-menu\">");
+		out.print("</ul>");
+		out.print("</li>");
+		out.print("</ul>");
+		out.print("</div>");
+		out.print("</nav>");
+		out.print("</div>");
+	}
+
+	public static void Import_CSS(JspWriter out) throws IOException {
+		out.print("<link rel=\"stylesheet\" type=\"text/css\" href=\"//debug.ocrosoft.com:8001/css/bootstrap.min.css\"/>");
+		out.print("<link rel=\"stylesheet\" type=\"text/css\" href=\"//debug.ocrosoft.com:8001/css/main.css\"/>");
+	}
+	
+	public static void Get_Footer(JspWriter out) throws IOException {
+		out.print("<div class=\"clearfix\">");
+		out.print("<nav class=\"navbar navbar-default\" role=\"navigation\" style=\"border-radius: 0px; bottom: 0px; margin: 20px 0px 0px 0px;\">");
+		out.print("<p class=\"text-muted credit\" style=\"padding: 10px; text-align: center;\">");
+		out.print("<span id=\"copyright\">&copy;2017 ocrosoft.com<br />");
+		out.print("浙ICP备16010729号");
+>>>>>>> branch 'master' of ssh://git@github.com/Ocrosoft/jsp_ocro.git
 		out.print("<span id='cc'>150104400108</span>");
 		out.print("</span>");
 		out.print("</p>");

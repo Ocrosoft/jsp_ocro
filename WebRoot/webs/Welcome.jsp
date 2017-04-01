@@ -21,12 +21,19 @@
 </head>
 
 <body>
+<<<<<<< HEAD
 	<% 
 	if(request.getSession().getAttribute("loginSession")==null){
 		RequestDispatcher rd = request.getRequestDispatcher("/webs/Login.jsp");  
 		rd.forward(request, response);
 	}
 	%>
+=======
+	<% if(request.getSession().getAttribute("loginSession")==null){
+		RequestDispatcher rd = request.getRequestDispatcher("/webs/Login.jsp");  
+		rd.forward(request, response);
+	} %>
+>>>>>>> branch 'master' of ssh://git@github.com/Ocrosoft/jsp_ocro.git
 	<!-- Header -->
 	<%
 		WebStyle.Get_Header(out, request);
