@@ -10,9 +10,7 @@
 <html>
 <head>
 <base href="<%=basePath%>">
-<%
-	WebStyle.Import_CSS(out);
-%>
+<%@include file="Import_CSS.jsp" %>
 
 <title>Register</title>
 <meta http-equiv="pragma" content="no-cache">
@@ -22,15 +20,12 @@
 
 <body>
 	<!-- Header -->
-	<%
-		WebStyle.Get_Header(out, request);
-	%>
+	<%@include file="Header_Script.jsp" %>
+	<jsp:include page="/webs/Header.jsp" flush="true" />
 
 	<!-- Content -->
-	<%
-		WebStyle.Get_Standard_Content_Heander(out);
-	%>
-	<form role="form" action="/WEB_JSP/CodeChecker" method="post">
+	<%@include file="Standard_Content_Header.jsp" %>
+	<form role="form" action="/WEB_JSP/CodeChecker" method="post" id="Register">
 		<div class="form-group">
 			<label for="inputUsername">Username</label><input type="text"
 				class="form-control" name="inputUsername" id="inputUsername"
@@ -90,13 +85,9 @@
 			class="btn btn-link"
 			style="right:0;position:absolute;outline: none" value="Login->" /></a>
 	</form>
-	<%
-		WebStyle.Get_Standard_Content_Footer(out);
-	%>
+	<%@include file="Standard_Content_Footer.jsp" %>
 	<!-- Footer -->
-	<%
-		WebStyle.Get_Footer(out);
-	%>
+	<%@include file="Footer.jsp" %>
 	<script>
 		function reloadCode() {
 			var time = new Date().getTime();
@@ -104,43 +95,53 @@
 		}
 		$("#imageCode").bind('click', reloadCode);
 	
-		function changeBorderColor(id) {
+		function changeBorderColor(id,message) {
 			$(id).css('border-color', '#f00');
+			$(id).poshytip('destroy');
+			$(id).poshytip({
+				content : message,
+				className : 'tip-skyblue',
+				showOn : 'none',
+				alignTo : 'target',
+				alignX : 'inner-right',
+				offsetY : '10'
+			});
+			$(id).poshytip('show');
 			$(id).focus(function() {
 				$(id).css('border-color', '#ccc');
+				$(id).poshytip('destroy');
 			});
 		}
 	
-		$('form').submit(function() {
+		$('#Register').submit(function() {
 			var username = $("#inputUsername")[0].value;
 			var password = $("#inputPassword")[0].value;
 			var repassword = $("#inputRepeatPassword")[0].value;
 			var year = $("#inputYear")[0].value;
 			var checkcode = $("#checkCode")[0].value;
-			var valid = true;
 	
 			if (username.length == 0) {
-				changeBorderColor("#inputUsername");
-				valid = false;
+				changeBorderColor("#inputUsername","Please enter username");
+				return false;
 			}
 			if (password.length < 6 || password.length > 20) {
-				changeBorderColor("#inputPassword");
-				valid = false;
+				changeBorderColor("#inputPassword","Password's length should be more than 7 and less than 20");
+				return false;
 			}
 			if (password != repassword) {
-				changeBorderColor("#repassword");
-				valid = false;
+				changeBorderColor("#inputRepeatPassword","Password you entered is not equal");
+				return false;
 			}
 			if (year < 18 || year > 100) {
-				changeBorderColor("#inputYear");
-				valid = false;
+				changeBorderColor("#inputYear","Please enter a valid age");
+				return false;
 			}
 			if (checkcode.length != 4) {
-				changeBorderColor("#checkCode");
-				valid = false;
+				changeBorderColor("#checkCode","Checkcode's length should be 4");
+				return false;
 			}
 	
-			return valid;
+			return true;
 		});
 	</script>
 </body>

@@ -10,9 +10,7 @@
 <html>
 <head>
 <base href="<%=basePath%>">
-<%
-	WebStyle.Import_CSS(out);
-%>
+<%@include file="Import_CSS.jsp" %>
 
 <title>Edit Profile</title>
 <meta http-equiv="pragma" content="no-cache">
@@ -28,14 +26,11 @@
 		}
 	%>
 	<!-- Header -->
-	<%
-		WebStyle.Get_Header(out, request);
-	%>
+	<%@include file="Header_Script.jsp" %>
+	<jsp:include page="/webs/Header.jsp" flush="true" />
 
 	<!-- Content -->
-	<%
-		WebStyle.Get_Standard_Content_Heander(out);
-	%>
+	<%@include file="Standard_Content_Header.jsp" %>
 	<form role="form" action="/WEB_JSP/CodeChecker" method="post">
 		<div class="form-group">
 			<label for="inputUsername">Username</label><input readonly="readonly"
@@ -85,7 +80,7 @@
 				id="inputMajor" />
 		</div>
 		<button type="submit" class="btn btn-primary form-control"
-			id="buttonSubmit">Accept</button>
+			id="buttonSubmit">Accept(not yet)</button>
 	</form>
 	<%
 		List<LoginEntity> res = LoginAct.UserSearch((String) request.getSession().getAttribute("loginSession"));
@@ -101,13 +96,9 @@
 			}
 		}
 	%>
-	<%
-		WebStyle.Get_Standard_Content_Footer(out);
-	%>
+	<%@include file="Standard_Content_Footer.jsp" %>
 
 	<!-- Footer -->
-	<%
-		WebStyle.Get_Footer(out);
-	%>
+	<%@include file="Footer.jsp" %>
 </body>
 </html>

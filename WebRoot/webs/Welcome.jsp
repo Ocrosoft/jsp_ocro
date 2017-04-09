@@ -10,9 +10,7 @@
 <html>
 <head>
 <base href="<%=basePath%>">
-<%
-	WebStyle.Import_CSS(out);
-%>
+<%@include file="Import_CSS.jsp" %>
 
 <title>Login</title>
 <meta http-equiv="pragma" content="no-cache">
@@ -21,41 +19,26 @@
 </head>
 
 <body>
-<<<<<<< HEAD
 	<% 
 	if(request.getSession().getAttribute("loginSession")==null){
 		RequestDispatcher rd = request.getRequestDispatcher("/webs/Login.jsp");  
 		rd.forward(request, response);
 	}
 	%>
-=======
-	<% if(request.getSession().getAttribute("loginSession")==null){
-		RequestDispatcher rd = request.getRequestDispatcher("/webs/Login.jsp");  
-		rd.forward(request, response);
-	} %>
->>>>>>> branch 'master' of ssh://git@github.com/Ocrosoft/jsp_ocro.git
 	<!-- Header -->
-	<%
-		WebStyle.Get_Header(out, request);
-	%>
+	<%@include file="Header_Script.jsp" %>
+	<jsp:include page="/webs/Header.jsp" flush="true" />
 
 	<!-- Content -->
-	<%
-		WebStyle.Get_Standard_Content_Heander(out);
-	%>
+	<%@include file="Standard_Content_Header.jsp" %>
 	<form class="form-horizontal" role="form" style="text-align:center;">
 		<h1 class="text-success">Welcome!</h1>
 		<input type="button" value="Return to login page" onclick="back()"
 			class="btn btn-primary" style="width:50%;" />
 	</form>
-	<%
-		WebStyle.Get_Standard_Content_Footer(out);
-	%>
-
+	<%@include file="Standard_Content_Footer.jsp" %>
 	<!-- Footer -->
-	<%
-		WebStyle.Get_Footer(out);
-	%>
+	<%@include file="Footer.jsp" %>
 	<script>
 		function back() {
 			window.location.href = '/WEB_JSP/webs/Login.jsp';

@@ -1,7 +1,6 @@
 package LRService;
 
 import java.io.IOException;
-<<<<<<< HEAD
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -18,41 +17,10 @@ public class LogoutAct extends HttpServlet {
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		request.getSession().removeAttribute("loginSession");
-		response.getWriter().write("<script>window.location.href=\"/WEB_JSP/webs/Login.jsp\";</script>");
+		request.getRequestDispatcher("/webs/Login.jsp").forward(request, response);
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		request.getSession().removeAttribute("loginSession");
-		response.getWriter().write("<script>window.location.href=\"/WEB_JSP/webs/Login.jsp\";</script>");
-=======
-import java.io.PrintWriter;
-
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
-public class LogoutAct extends HttpServlet {
-
-	public LogoutAct() {
-		super();
+		doGet(request, response);
 	}
-
-	public void destroy() {
-		super.destroy();
-	}
-
-	public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		request.getSession().removeAttribute("loginSession");
-		response.getWriter().write("<script>window.location.href=\"/WEB_JSP/webs/Login.jsp\";</script>");
-	}
-	public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		request.getSession().removeAttribute("loginSession");
-		response.getWriter().write("<script>window.location.href=\"/WEB_JSP/webs/Login.jsp\";</script>");
-	}
-
-	public void init() throws ServletException {
->>>>>>> branch 'master' of ssh://git@github.com/Ocrosoft/jsp_ocro.git
-	}
-
 }
