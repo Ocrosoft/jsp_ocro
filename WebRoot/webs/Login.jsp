@@ -1,4 +1,4 @@
-<%@ page isELIgnored="false" language="java" import="java.util.*,WebStyleService.*,LRService.*" pageEncoding="UTF-8"%>
+<%@ page isELIgnored="false" language="java" import="java.util.*,LRService.*" pageEncoding="UTF-8"%>
 <%
 	String path = request.getContextPath();
 	String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort()
@@ -21,7 +21,7 @@
 <body>
 	<!-- Header -->
 	<%@include file="Header_Script.jsp" %>
-	<jsp:include page="/webs/Header.jsp" flush="true" />
+	<jsp:include page="Header.jsp" flush="true" />
 	
 	<!-- Content -->
 	<%@include file="Standard_Content_Header.jsp" %>
@@ -94,43 +94,27 @@
 		}
 		$("#imageCode").bind('click', reloadCode);
 	
-		function changeBorderColor(id, message) {
-			$(id).css('border-color', '#f00');
-			$(id).poshytip('destroy');
-			$(id).poshytip({
-				content : message,
-				className : 'tip-skyblue',
-				showOn : 'none',
-				alignTo : 'target',
-				alignX : 'inner-right',
-				offsetY : '10'
-			});
-			$(id).poshytip('show');
-			$(id).focus(function() {
-				$(id).css('border-color', '#ccc');
-				$(id).poshytip('destroy');
-			});
-		}
-	
-		$('#Login').submit(function() {
-			var username = $("#inputUsername")[0].value;
-			var password = $("#inputPassword")[0].value;
-			var checkcode = $("#checkCode")[0].value;
-	
-			if (username.length == 0) {
-				changeBorderColor("#inputUsername", "Please enter username");
-				return false;
-			}
-			if (password.length < 6 || password.length > 20) {
-				changeBorderColor("#inputPassword", "Password's length should be more than 7 and less than 20");
-				return false;
-			}
-			if (checkcode.length != 4) {
-				changeBorderColor("#checkCode", "Checkcode's length should be 4");
-				return false;
-			}
-			return true;
-		});
+        $('#Login').submit(function () {
+            var username = $("#inputUsername")[0].value;
+            var password = $("#inputPassword")[0].value;
+            var checkcode = $("#checkCode")[0].value;
+            var reg = new RegExp("^[0-9a-zA-Z_]{1,21}$");
+            if (!reg.test(username)) {
+                changeBorderColor("#inputUsername", "Username should satisfy:<br/>1.Length at least 1, at most 20.<br/>2.Include '0-9','a-z','A-Z','_' only.");
+                return false;
+            }
+            reg = new RegExp("^[!@#$%^&*()0-9a-zA-Z_?<>.]{7,20}$");
+            if (!reg.test(password)) {
+                changeBorderColor("#inputPassword", "Password should satisfy:<br/>1.Length at least 7, at most 20.<br/>2.Include '0-9','a-z','A-Z'<br/>and special character(such as '!') only.");
+                return false;
+            }
+            reg = new RegExp("^[a-zA-Z0-9]{4}$");
+            if (!reg.test(checkcode)) {
+                changeBorderColor("#checkCode", "Checkcode should satisfy:<br>1.Length must be 4.<br/>2.Include '0-9','a-z','A-Z' only.");
+                return false;
+            }
+            return true;
+        });
 	</script>
 </body>
 </html>

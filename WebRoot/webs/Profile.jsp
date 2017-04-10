@@ -1,5 +1,4 @@
-<%@ page language="java" import="java.util.*" import="WebStyleService.*"
-	import="LRService.*" pageEncoding="UTF-8"%>
+<%@ page language="java" import="java.util.*" import="LRService.*" pageEncoding="UTF-8"%>
 <%
 	String path = request.getContextPath();
 	String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort()
@@ -27,7 +26,7 @@
 	%>
 	<!-- Header -->
 	<%@include file="Header_Script.jsp" %>
-	<jsp:include page="/webs/Header.jsp" flush="true" />
+	<jsp:include page="Header.jsp" flush="true" />
 
 	<!-- Content -->
 	<%@include file="Standard_Content_Header.jsp" %>

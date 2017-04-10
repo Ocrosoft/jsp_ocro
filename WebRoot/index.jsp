@@ -10,28 +10,20 @@
 <html>
 <head>
 <base href="<%=basePath%>">
-<%
-	WebStyleService.WebStyle.Import_CSS(out);
-%>
+<%@include file="webs/Import_CSS.jsp" %>
 
 <title>Index</title>
 </head>
 
 <body>
 	<!-- Header -->
-	<%
-		WebStyleService.WebStyle.Get_Header(out, request);
-	%>
+	<%@include file="webs/Header_Script.jsp" %>
+	<jsp:include page="webs/Header.jsp" flush="true" />
 
 	<!-- Content -->
-	<%
-		WebStyleService.WebStyle.Get_Standard_Content_Heander(out);
-		WebStyleService.WebStyle.Get_Standard_Content_Footer(out);
-	%>
-
+	<%@include file="webs/Standard_Content_Header.jsp" %>
+	<%@include file="webs/Standard_Content_Footer.jsp" %>
 	<!-- Footer -->
-	<%
-		WebStyleService.WebStyle.Get_Footer(out);
-	%>
+	<%@include file="webs/Footer.jsp" %>
 </body>
 </html>
