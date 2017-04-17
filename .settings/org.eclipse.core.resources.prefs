@@ -1,4 +1,7 @@
 eclipse.preferences.version=1
 encoding//WebRoot/webs/Footer.jsp=UTF-8
 encoding//WebRoot/webs/Header.jsp=UTF-8
+encoding//WebRoot/webs/ShowResult.jsp=UTF-8
 encoding//WebRoot/webs/Standard_Content_Footer.jsp=UTF-8
+encoding//src/LRService=UTF-8
+encoding//src/RCService=UTF-8

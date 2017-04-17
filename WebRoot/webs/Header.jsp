@@ -30,9 +30,9 @@
 					action="/WEB_JSP/UserSearchAct">
 					<div class="form-group">
 						<input name="searchUsername" type="text" class="form-control"
-							placeholder="Enter username" />
+							placeholder="待搜索的用户名" />
 					</div>
-					<button type="submit" class="btn btn-default">Search</button>
+					<button type="submit" class="btn btn-default">搜索</button>
 				</form>
 				<ul class="nav navbar-nav navbar-right">
 					<li class="dropdown"><a href="#" class="dropdown-toggle"
@@ -41,21 +41,21 @@
  	if (session.getAttribute("loginSession") != null) {
  		out.print(session.getAttribute("loginSession"));
  	} else
- 		out.print("Login");
+ 		out.print("登录");
  %> <strong class="caret"></strong>
 					</a>
 						<ul class="dropdown-menu">
 							<%
 								if (session.getAttribute("loginSession") != null) {
-									out.print("<li><a href=\"/WEB_JSP/webs/Profile.jsp\">Edit Profile</a></li>");
+									out.print("<li><a href=\"/WEB_JSP/webs/Profile.jsp\">修改资料</a></li>");
 									out.print(
-											"<li><a href=\"#\" onclick=\"document.getElementById(\'LogoutForm\').submit();return false;\">Logout</a></li>");
+											"<li><a href=\"#\" onclick=\"document.getElementById(\'LogoutForm\').submit();return false;\">退出登录</a></li>");
 									out.print(
 											"<form style=\"display:none;\" id=\"LogoutForm\" method=\"post\" action=\"/WEB_JSP/LogoutAct\">");
 									out.print("</form>");
 								} else {
-									out.print("<li><a href=\"/WEB_JSP/webs/Login.jsp\">Login</a></li>");
-									out.print("<li><a href=\"/WEB_JSP/webs/Register.jsp\">Register</a></li>");
+									out.print("<li><a href=\"/WEB_JSP/webs/Login.jsp\">登录</a></li>");
+									out.print("<li><a href=\"/WEB_JSP/webs/Register.jsp\">注册</a></li>");
 								}
 							%>
 						</ul></li>

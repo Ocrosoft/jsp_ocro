@@ -31,7 +31,8 @@
 	<!-- Content -->
 	<%@include file="Standard_Content_Header.jsp" %>
 	<form class="form-horizontal" role="form" style="text-align:center;">
-		<h1 class="text-success">Welcome!</h1>
+		<h1 class="text-success">欢迎!</h1>
+		<h1 class="text-success">{$loginIden} {$loginSession}</h1>
 		<input type="button" value="Return to login page" onclick="back()"
 			class="btn btn-primary" style="width:50%;" />
 	</form>

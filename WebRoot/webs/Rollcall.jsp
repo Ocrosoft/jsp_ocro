@@ -87,6 +87,10 @@
 	<%@include file="Footer.jsp"%>
 </body>
 <script>
+	if ('${rollcallErrorMsg}' != '') {
+			changeBorderColor('${errorMsgShowID}', '${rollcallErrorMsg}');
+		}
+
 	$('#Rollcall').submit(function() {
 		var xh = $("#inputXH")[0].value;
 		var xm = $("#inputName")[0].value.trim();

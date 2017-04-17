@@ -1,4 +1,4 @@
-package LRService;
+package RCService;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -15,6 +15,8 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.dbutils.DbUtils;
 import org.apache.commons.dbutils.QueryRunner;
+
+import LRService.CodeChecker;
 
 @WebServlet("/RollcallAct")
 public class RollcallAct extends HttpServlet {
@@ -43,7 +45,7 @@ public class RollcallAct extends HttpServlet {
 		PrintWriter out = response.getWriter();
 
 		Connection conn = null;
-		String url = "jdbc:mysql://debug.ocrosoft.com:3306/rollcall";
+		String url = "jdbc:mysql://debug.ocrosoft.com:3306/rollcall?useUnicode=true&characterEncoding=utf8";
 		String jdbcDriver = "com.mysql.jdbc.Driver";
 		String user = "root";
 		String pass = "mysqlForASPandJSP";
@@ -54,9 +56,10 @@ public class RollcallAct extends HttpServlet {
 			String sql = "insert into rollcall(xh,xm,ip,sj,zc,xq) values(?,?,?,?,?,?)";
 			int res = qr.update(conn, sql, new Object[] { xh, xm, ip, date, zc, xq });
 			if (0 < res) {
-				out.println("<script>alert('点名成功!');</script>");
-				RequestDispatcher rd = request.getRequestDispatcher("/webs/Rollcall.jsp");  
-				rd.forward(request, response);
+				out.println("<script>alert('鐐瑰悕鎴愬姛!');</script>");
+				out.println("<script>location.href='/WEB_JSP/webs/Login.jsp';</script>");
+				//RequestDispatcher rd = request.getRequestDispatcher("/webs/Rollcall.jsp");  
+				//rd.forward(request, response);
 			} else {
 				RequestDispatcher rd = request.getRequestDispatcher("/webs/Rollcall.jsp");  
 				request.setAttribute("errorMsgShowID", "#buttonSubmit");

@@ -8,6 +8,7 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -28,18 +29,18 @@ public class CodeChecker extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		request.setCharacterEncoding("utf-8");
-		String piccode = (String) request.getSession().getAttribute("code"); // ÕıÈ·µÄÑéÖ¤Âë
-		String username = request.getParameter("inputUsername").trim(); // ÓÃ»§Ãû
-		String password = request.getParameter("inputPassword").trim(); // ÃÜÂë
-		String sex = request.getParameter("optionSex").trim(); // ĞÔ±ğ
-		String year = request.getParameter("inputYear").trim(); // ÄêÁä
-		String grade = request.getParameter("selectGrade").trim(); // Äê¼¶
-		String major = request.getParameter("selectMajor").trim(); // ×¨Òµ
-		String checkCode = request.getParameter("checkCode").trim(); // ÑéÖ¤Âë
-		String date=getNowDate();
-		date=date.replaceAll("-", "/");
-		date=date.replaceAll("/0", "/");
-		String ip = request.getHeader("x-forwarded-for"); // IP
+		String piccode = (String) request.getSession().getAttribute("code");
+		String username = request.getParameter("inputUsername").trim();
+		String password = request.getParameter("inputPassword").trim();
+		String sex = request.getParameter("optionSex").trim();
+		String year = request.getParameter("inputYear").trim();
+		String grade = request.getParameter("selectGrade").trim();
+		String major = request.getParameter("selectMajor").trim();
+		String checkCode = request.getParameter("checkCode").trim();
+		String date = getNowDate();
+		date = date.replaceAll("-", "/");
+		date = date.replaceAll("/0", "/");
+		String ip = request.getHeader("x-forwarded-for");
 		if (ip == null || ip.length() == 0 || ip.equalsIgnoreCase("unknown")) {
 			ip = request.getRemoteAddr();
 		}
@@ -48,7 +49,7 @@ public class CodeChecker extends HttpServlet {
 		PrintWriter out = response.getWriter();
 		if (checkCode.equals(piccode)) {
 			Connection conn = null;
-			String url = "jdbc:mysql://debug.ocrosoft.com:3306/users";
+			String url = "jdbc:mysql://debug.ocrosoft.com:3306/users?useUnicode=true&characterEncoding=utf8";
 			String jdbcDriver = "com.mysql.jdbc.Driver";
 			String user = "root";
 			String pass = "mysqlForASPandJSP";
@@ -56,28 +57,32 @@ public class CodeChecker extends HttpServlet {
 			try {
 				conn = DriverManager.getConnection(url, user, pass);
 				QueryRunner qr = new QueryRunner();
-				String sql = "insert into users values(?,?,?,?,?,?,?,?)";
-				int res = qr.update(conn, sql,
-						new Object[] { username, MD5_Operation.getMD5(password).toUpperCase(), sex, grade, year, major, ip, date });
+				String sql = "insert into users(username,password,sex,grade,age,major,IP,regtime) values(?,?,?,?,?,?,?,?)";
+				int res = qr.update(conn, sql, new Object[] { username, MD5_Operation.getMD5(password).toUpperCase(),
+						sex, grade, year, major, ip, date });
 				if (0 < res) {
-					out.println("<script>alert('Register successful! Turning to login page...');</script>");
-					out.println(
-							"<script>window.location.href='http://debug.ocrosoft.com:8002/WEB_JSP/webs/Login.jsp';</script>");
+					//out.println("<script>alert('æ³¨å†ŒæˆåŠŸï¼Œç‚¹å‡»ç¡®å®šå‰å¾€ç™»å½•ç•Œé¢...');</script>");
+					RequestDispatcher rd = request.getRequestDispatcher("/webs/Login.jsp");
+					rd.forward(request, response);
 				} else {
-					out.println("Faild, server returned an error message(1)!");
-					out.println(
-							"<script>window.location.href='http://debug.ocrosoft.com:8002/WEB_JSP/webs/Register.jsp';</script>");
+					RequestDispatcher rd = request.getRequestDispatcher("/webs/Register.jsp");
+					request.setAttribute("errorMsgShowID", "#inputPassword");
+					request.setAttribute("regErrorMsg", "æ³¨å†Œå¤±è´¥ï¼Œè¯·æ›´æ¢ç”¨æˆ·ååé‡è¯•ï¼");
+					rd.forward(request, response);
 				}
 			} catch (SQLException e) {
-				out.println("Faild, server returned an error message(0)!");
-				out.println(
-						"<script>window.location.href='http://debug.ocrosoft.com:8002/WEB_JSP/webs/Register.jsp';</script>");
-				e.printStackTrace();
+				RequestDispatcher rd = request.getRequestDispatcher("/webs/Register.jsp");
+				request.setAttribute("errorMsgShowID", "#buttonSubmit");
+				request.setAttribute("regErrorMsg", "æœåŠ¡å™¨é”™è¯¯ï¼");
+				rd.forward(request, response);
 			} finally {
 				DbUtils.closeQuietly(conn);
 			}
 		} else {
-			out.println("Incorrect checkCode!");
+			RequestDispatcher rd = request.getRequestDispatcher("/webs/Login.jsp");
+			request.setAttribute("errorMsgShowID", "#checkCode");
+			request.setAttribute("regErrorMsg", "æ³¨å†Œç é”™è¯¯!");
+			rd.forward(request, response);
 		}
 		out.flush();
 		out.close();
@@ -89,9 +94,9 @@ public class CodeChecker extends HttpServlet {
 	}
 
 	public static String getNowDate() {
-		   Date currentTime = new Date();
-		   SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-		   String dateString = formatter.format(currentTime);
-		   return dateString;
-		}
+		Date currentTime = new Date();
+		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		String dateString = formatter.format(currentTime);
+		return dateString;
+	}
 }
