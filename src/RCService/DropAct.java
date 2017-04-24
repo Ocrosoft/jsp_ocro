@@ -1,51 +1,66 @@
-package LRService;
+package RCService;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.Connection;
 import java.sql.SQLException;
-import java.util.List;
 
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-@WebServlet("/UserSearchAct")
+import org.apache.commons.dbutils.DbUtils;
+import org.apache.commons.dbutils.QueryRunner;
+
+@WebServlet("/DropAct")
 /**
- * 查询所有已注册学生用户
+ * 作废点名记录
  * @author ocrosoft
  *
  */
-public class UserSearchAct extends HttpServlet {
+public class DropAct extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
-	public UserSearchAct() {
+	public DropAct() {
 		super();
 	}
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		request.setCharacterEncoding("utf-8");
-		String username = request.getParameter("searchUsername").trim();
+
+		String id = request.getParameter("dropID").trim();
 		response.setContentType("text/html;charset=utf-8");
 		PrintWriter out = response.getWriter();
 
-		List<LoginEntity> res = null;
+		Connection conn = null;
+		
+		int res = 0;
+
 		try {
-			res = LoginAct.UserSearch(username);
+			conn = connections.Connection.getConnection();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		if (!res.equals(null) && res.size() != 0) {
-			RequestDispatcher rd = request.getRequestDispatcher("/webs/UserSearchShowResult.jsp");
-			request.setAttribute("resultList", res);
-			rd.forward(request, response);
-		} else {
-			out.println("<script>alert('User not Exists!');</script>");
+		QueryRunner qr = new QueryRunner();
+		String sql = "update rollcall set yx=0 where id=?";
+		try {
+			res = qr.update(conn, sql, id);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		if(res==0){
+			out.println("<script>alert('作废失败...');</script>");
+		}else{
+			out.println("<script>alert('作废成功！请刷新页面以显示最新内容。');</script>");
 			out.println("<script>history.go(-1);</script>");
 		}
+
+		DbUtils.closeQuietly(conn);
+
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)

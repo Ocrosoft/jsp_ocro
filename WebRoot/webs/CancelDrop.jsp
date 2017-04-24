@@ -1,8 +1,7 @@
 <%@ page language="java" import="java.util.*,RCService.RollcallEntity" pageEncoding="UTF-8"%>
 <%
-	String path = request.getContextPath();
-	String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort()
-			+ path + "/";
+String path = request.getContextPath();
+String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
 %>
 
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
@@ -60,7 +59,7 @@
 								out.println("<td>" + i.getSj() + "</td>");
 								out.println("<td><a href='/WEB_JSP/RollcallQuery?selectorSJZ="+i.getZc()+"&selectorSJX="+i.getXq()+"'>第" + i.getZc() + "周 星期" + i.getDSXQ() + "</a></td>");
 								out.println("<td>" + i.isYX() + "</td>");
-								out.println("<td><a href='" + "/WEB_JSP/DropAct?dropID=" + i.getId() + "'>" + "作废</td>");
+								out.println("<td><a href='" + "/WEB_JSP/CancelDropAct?cancelID=" + i.getId() + "'>" + "恢复</td>");
 							}
 						%>
 					</table>

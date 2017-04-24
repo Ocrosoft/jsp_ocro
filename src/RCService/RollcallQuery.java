@@ -3,7 +3,6 @@ package RCService;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.List;
 
@@ -18,10 +17,12 @@ import org.apache.commons.dbutils.DbUtils;
 import org.apache.commons.dbutils.QueryRunner;
 import org.apache.commons.dbutils.handlers.BeanListHandler;
 
-import LRService.CodeChecker;
-import LRService.LoginEntity;
-
 @WebServlet("/RollcallQuery")
+/**
+ * 点名记录查询 类
+ * @author ocrosoft
+ *
+ */
 public class RollcallQuery extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
@@ -32,13 +33,22 @@ public class RollcallQuery extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		request.setCharacterEncoding("utf-8");
-		String username = request.getParameter("rollcall_search_key").trim();
+		String username="";
+		String ZC="";
+		String XQ="";
+		try {
+			username = request.getParameter("rollcall_search_key").trim();
+		} catch (Exception e) {
+			ZC=request.getParameter("selectorSJZ").trim();
+			XQ=request.getParameter("selectorSJX").trim();
+		}
 		response.setContentType("text/html;charset=utf-8");
 		PrintWriter out = response.getWriter();
 
 		List<RollcallEntity> res = null;
 		try {
-			res = UserSearch(username);
+			if(username!="") res = UserSearch(username);
+			else res=UserSearch(ZC,XQ);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -47,7 +57,7 @@ public class RollcallQuery extends HttpServlet {
 			request.setAttribute("resultList", res);
 			rd.forward(request, response);
 		} else {
-			out.println("<script>alert('User not Exists!');</script>");
+			out.println("<script>alert('查询不到任何记录!');</script>");
 			out.println("<script>history.go(-1);</script>");
 		}
 	}
@@ -57,21 +67,55 @@ public class RollcallQuery extends HttpServlet {
 		doGet(request, response);
 	}
 
+	/**
+	 * 查询符合条件的点名记录
+	 * @param username 用户名包含的关键词
+	 * @return RollcallEntity 集合
+	 * @throws SQLException
+	 */
 	public static List<RollcallEntity> UserSearch(String username) throws SQLException {
 		Connection conn = null;
-		String url = "jdbc:mysql://debug.ocrosoft.com:3306/rollcall";
-		String jdbcDriver = "com.mysql.jdbc.Driver";
-		String user = "root";
-		String pass = "mysqlForASPandJSP";
-		DbUtils.loadDriver(jdbcDriver);
+		conn=connections.Connection.getConnection();
 		List<RollcallEntity> res = null;
 
-		conn = DriverManager.getConnection(url, user, pass);
 		QueryRunner qr = new QueryRunner();
 		username = "%" + username + "%";
 		String sql = "select * from rollcall where xh like ? or xm like ?";
-		res = (List<RollcallEntity>) qr.query(conn, sql, new BeanListHandler<RollcallEntity>(RollcallEntity.class),
-				username, username);
+		res = (List<RollcallEntity>) qr.query(conn, sql, new BeanListHandler<RollcallEntity>(RollcallEntity.class),username, username);
+
+		DbUtils.closeQuietly(conn);
+
+		return res;
+	}
+	
+	/**
+	 * 根据时间查询点名记录
+	 * @param ZC 周次
+	 * @param XQ 星期
+	 * @return RollcallEntity 集合
+	 * @throws SQLException
+	 */
+	public static List<RollcallEntity> UserSearch(String ZC,String XQ) throws SQLException {
+		List<RollcallEntity> res = null;
+		
+		Connection conn = connections.Connection.getConnection();
+		QueryRunner qr = new QueryRunner();
+		String sql = "select * from rollcall where zc=? and xq=?";
+		res = (List<RollcallEntity>) qr.query(conn, sql, new BeanListHandler<RollcallEntity>(RollcallEntity.class),ZC,XQ);
+		DbUtils.closeQuietly(conn);
+
+		return res;
+	}
+	
+	public static List<RollcallEntity> rollcallQueryInavailable(String username) throws SQLException {
+		Connection conn = null;
+		conn=connections.Connection.getConnection();
+		List<RollcallEntity> res = null;
+
+		QueryRunner qr = new QueryRunner();
+		username = "%" + username + "%";
+		String sql = "select * from rollcall where (xh like ? or xm like ?) and yx=0";
+		res = (List<RollcallEntity>) qr.query(conn, sql, new BeanListHandler<RollcallEntity>(RollcallEntity.class),username, username);
 
 		DbUtils.closeQuietly(conn);
 

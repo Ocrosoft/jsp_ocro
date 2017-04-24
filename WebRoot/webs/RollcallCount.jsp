@@ -1,4 +1,5 @@
-<%@ page language="java" import="java.util.*,RCService.RollcallEntity" pageEncoding="UTF-8"%>
+<%@page import="RCService.RollcallCountEntity"%>
+<%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
 <%
 	String path = request.getContextPath();
 	String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort()
@@ -34,33 +35,25 @@
 				<div class="table-responsive">
 					<table id="stdContentMoudle_registedUser" class="table">
 						<tr style="background-color:#4472C4;">
-							<th>ID</th>
 							<th>学号</th>
 							<th>姓名</th>
-							<th>IP</th>
-							<th>时间</th>
-							<th>周次 星期</th>
-							<th>有效</th>
-							<th>作废</th>
+							<th>统计</th>
+							<th>详细情况</th>
 						</tr>
 						<%
-							List<RollcallEntity> res = (List<RollcallEntity>) request.getAttribute("resultList");
+							List<RollcallCountEntity> res = (List<RollcallCountEntity>) request.getAttribute("resultList");
 							int index = 0;
-							for (RollcallEntity i : res) {
+							for (RollcallCountEntity i : res) {
 								if (index++ % 2 == 0) {
 									out.println("<tr style=\"background-color:#D9E2F3;\">");
 								} else {
 									out.println("<tr style=\"background-color:#FFFFFF;\">");
 								}
-								out.println("<td>" + i.getId() + "</td>");
-								out.println("<td><a href='" + "/WEB_JSP/RollcallQuery?rollcall_search_key=" + i.getXh() + "'>"
-										+ i.getXh() + "</td>");
+								out.println("<td>" + i.getXh() + "</td>");
 								out.println("<td>" + i.getXm() + "</td>");
-								out.println("<td>" + i.getIp() + "</td>");
-								out.println("<td>" + i.getSj() + "</td>");
-								out.println("<td><a href='/WEB_JSP/RollcallQuery?selectorSJZ="+i.getZc()+"&selectorSJX="+i.getXq()+"'>第" + i.getZc() + "周 星期" + i.getDSXQ() + "</a></td>");
-								out.println("<td>" + i.isYX() + "</td>");
-								out.println("<td><a href='" + "/WEB_JSP/DropAct?dropID=" + i.getId() + "'>" + "作废</td>");
+								out.println("<td>" + i.getCount() + "</td>");
+								out.println(
+										"<td><a href='" + "/WEB_JSP/RollcallQuery?rollcall_search_key=" + i.getXh() + "'>详细情况</a></td>");
 							}
 						%>
 					</table>

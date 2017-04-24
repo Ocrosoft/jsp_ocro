@@ -1,8 +1,7 @@
-package LRService;
+package RCService;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.sql.SQLException;
 import java.util.List;
 
 import javax.servlet.RequestDispatcher;
@@ -12,38 +11,32 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-@WebServlet("/UserSearchAct")
-/**
- * 查询所有已注册学生用户
- * @author ocrosoft
- *
- */
-public class UserSearchAct extends HttpServlet {
+@WebServlet("/RollcallCancelDrop")
+public class RollcallCancelDrop extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
-	public UserSearchAct() {
+	public RollcallCancelDrop() {
 		super();
 	}
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		request.setCharacterEncoding("utf-8");
-		String username = request.getParameter("searchUsername").trim();
 		response.setContentType("text/html;charset=utf-8");
 		PrintWriter out = response.getWriter();
-
-		List<LoginEntity> res = null;
+		String username = request.getParameter("rollcall_cancel_key");
+		List<RollcallEntity> res = null;
 		try {
-			res = LoginAct.UserSearch(username);
-		} catch (SQLException e) {
+			res = RollcallQuery.rollcallQueryInavailable(username);
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		if (!res.equals(null) && res.size() != 0) {
-			RequestDispatcher rd = request.getRequestDispatcher("/webs/UserSearchShowResult.jsp");
+			RequestDispatcher rd = request.getRequestDispatcher("/webs/CancelDrop.jsp");
 			request.setAttribute("resultList", res);
 			rd.forward(request, response);
 		} else {
-			out.println("<script>alert('User not Exists!');</script>");
+			out.println("<script>alert('查询不到任何记录!');</script>");
 			out.println("<script>history.go(-1);</script>");
 		}
 	}

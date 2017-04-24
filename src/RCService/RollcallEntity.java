@@ -57,4 +57,13 @@ public class RollcallEntity {
 	public void setYx(boolean yx) {
 		this.yx = yx;
 	}
+	public String getDSXQ(){
+		String[] array={"","一","二","三","四","五","六","日"};
+		int tmp=Integer.parseInt(xq);
+		return array[tmp];
+	}
+	public String isYX(){
+		if(yx)return "有效";
+		else return "无效";
+	}
 }

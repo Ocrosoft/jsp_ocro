@@ -25,6 +25,10 @@ public class CheckCode extends HttpServlet {
         super();
     }
 
+    /**
+     * 获取验证码(Get)
+     * 异常：ServletException，IOException
+     */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		ServletOutputStream servletOutputStream = response.getOutputStream();
 		
@@ -56,16 +60,28 @@ public class CheckCode extends HttpServlet {
 		request.getSession().setAttribute("code",code);
 	}
 
+	/**
+	 * 获取验证码(Post)
+	 * 异常：ServletException，IOException
+	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		doGet(request, response);
 	}
 	
+	/**
+	 * 旋转文字后将文字打印到画布上
+	 * @param g 画布Graphics对象
+	 * @param s 要绘制的文字
+	 * @param angle 要旋转的角度
+	 * @param x X坐标
+	 * @param y Y坐标
+	 */
 	public void rotateText(Graphics g, String s, double angle, int x, int y) 
 	{ 
 		Graphics2D g2d = (Graphics2D)g; 
 		g2d.translate(x, y); 
 		g2d.rotate(Math.PI*(angle/-180)); 
-		g2d.setFont(new Font("΢���ź�",Font.BOLD,23));
+		g2d.setFont(new Font("΢���ź�",Font.BOLD,23));
 		g2d.setColor(new Color(0, 0, 153));
 		g2d.drawString(s, 0, 0); 
 		g2d.rotate(-Math.PI*(angle/-180)); 

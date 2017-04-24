@@ -3,7 +3,6 @@ package LRService;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.List;
 import javax.servlet.RequestDispatcher;
@@ -33,7 +32,7 @@ public class LoginAct extends HttpServlet {
 		String piccode = (String) request.getSession().getAttribute("code");
 		String username = request.getParameter("inputUsername").trim();
 		String password = request.getParameter("inputPassword").trim();
-		password = MD5_Operation.getMD5(password).toUpperCase();
+		password = MD5_Operation.getMD5(password);
 		String checkCode = request.getParameter("checkCode").trim();
 		String remember = request.getParameter("remember");
 		if (remember != null && remember.equals("on")) {
@@ -49,7 +48,7 @@ public class LoginAct extends HttpServlet {
 		boolean teacher = false;
 		if (checkTeacher != null && checkTeacher.equals("on"))
 			teacher = true;
-		String ip = request.getHeader("x-forwarded-for"); // IP
+		String ip = request.getHeader("x-forwarded-for");
 		if (ip == null || ip.length() == 0 || ip.equalsIgnoreCase("unknown")) {
 			ip = request.getRemoteAddr();
 		}
@@ -60,7 +59,6 @@ public class LoginAct extends HttpServlet {
 			try {
 				res = LoginJudger(username, password, teacher);
 			} catch (SQLException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 			if (res != null) {
@@ -96,14 +94,9 @@ public class LoginAct extends HttpServlet {
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public static LoginEntity LoginJudger(String username, String password, Boolean teacher) throws SQLException {
 		Connection conn = null;
-		String url = "jdbc:mysql://debug.ocrosoft.com:3306/users";
-		String jdbcDriver = "com.mysql.jdbc.Driver";
-		String user = "root";
-		String pass = "mysqlForASPandJSP";
-		DbUtils.loadDriver(jdbcDriver);
+		conn=connections.Connection.getConnection();
 		LoginEntity res = null;
 
-		conn = DriverManager.getConnection(url, user, pass);
 		QueryRunner qr = new QueryRunner();
 		String sql = "select * from " + (teacher ? "teacher" : "users") + " where username=? and password=?";
 		res = qr.query(conn, sql, new BeanHandler(LoginEntity.class), username, password);
@@ -115,14 +108,9 @@ public class LoginAct extends HttpServlet {
 
 	public static List<LoginEntity> UserSearch(String username) throws SQLException {
 		Connection conn = null;
-		String url = "jdbc:mysql://debug.ocrosoft.com:3306/users";
-		String jdbcDriver = "com.mysql.jdbc.Driver";
-		String user = "root";
-		String pass = "mysqlForASPandJSP";
-		DbUtils.loadDriver(jdbcDriver);
+		conn=connections.Connection.getConnection();
 		List<LoginEntity> res = null;
 
-		conn = DriverManager.getConnection(url, user, pass);
 		QueryRunner qr = new QueryRunner();
 		username = "%" + username + "%";
 		String sql = "select * from users where username like ?";
@@ -135,14 +123,9 @@ public class LoginAct extends HttpServlet {
 
 	public static List<LoginEntity> UserSearchEx(String username) throws SQLException {
 		Connection conn = null;
-		String url = "jdbc:mysql://debug.ocrosoft.com:3306/users";
-		String jdbcDriver = "com.mysql.jdbc.Driver";
-		String user = "root";
-		String pass = "mysqlForASPandJSP";
-		DbUtils.loadDriver(jdbcDriver);
+		conn=connections.Connection.getConnection();
 		List<LoginEntity> res = null;
 
-		conn = DriverManager.getConnection(url, user, pass);
 		QueryRunner qr = new QueryRunner();
 		String sql = "select * from users where username = ?";
 		res = (List<LoginEntity>) qr.query(conn, sql, new BeanListHandler<LoginEntity>(LoginEntity.class), username);

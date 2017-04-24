@@ -3,10 +3,9 @@ package LRService;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Connection;
-import java.util.Date;
-import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -18,11 +17,17 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.dbutils.DbUtils;
 import org.apache.commons.dbutils.QueryRunner;
 
-@WebServlet("/CodeChecker")
-public class CodeChecker extends HttpServlet {
+@WebServlet("/RegisterAct")
+/**
+ * 注册 类
+ * 
+ * @author ocrosoft
+ * 
+ */
+public class RegisterAct extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
-	public CodeChecker() {
+	public RegisterAct() {
 		super();
 	}
 
@@ -49,19 +54,12 @@ public class CodeChecker extends HttpServlet {
 		PrintWriter out = response.getWriter();
 		if (checkCode.equals(piccode)) {
 			Connection conn = null;
-			String url = "jdbc:mysql://debug.ocrosoft.com:3306/users?useUnicode=true&characterEncoding=utf8";
-			String jdbcDriver = "com.mysql.jdbc.Driver";
-			String user = "root";
-			String pass = "mysqlForASPandJSP";
-			DbUtils.loadDriver(jdbcDriver);
 			try {
-				conn = DriverManager.getConnection(url, user, pass);
+				conn = connections.Connection.getConnection();
 				QueryRunner qr = new QueryRunner();
 				String sql = "insert into users(username,password,sex,grade,age,major,IP,regtime) values(?,?,?,?,?,?,?,?)";
-				int res = qr.update(conn, sql, new Object[] { username, MD5_Operation.getMD5(password).toUpperCase(),
-						sex, grade, year, major, ip, date });
+				int res = qr.update(conn, sql, new Object[] { username, MD5_Operation.getMD5(password),sex, grade, year, major, ip, date });
 				if (0 < res) {
-					//out.println("<script>alert('注册成功，点击确定前往登录界面...');</script>");
 					RequestDispatcher rd = request.getRequestDispatcher("/webs/Login.jsp");
 					rd.forward(request, response);
 				} else {
@@ -93,6 +91,11 @@ public class CodeChecker extends HttpServlet {
 		doGet(request, response);
 	}
 
+	/**
+	 * 获取当前时间
+	 * 
+	 * @return yyyy-MM-dd HH:mm:ss 格式的时间
+	 */
 	public static String getNowDate() {
 		Date currentTime = new Date();
 		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");

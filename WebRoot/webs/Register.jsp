@@ -24,7 +24,7 @@
 
 	<!-- Content -->
 	<%@include file="Standard_Content_Header.jsp"%>
-	<form role="form" action="/WEB_JSP/CodeChecker" method="post"
+	<form role="form" action="/WEB_JSP/RegisterAct" method="post"
 		id="Register">
 		<div class="form-group">
 			<label for="inputUsername">用户名</label><input type="text"
